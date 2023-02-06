@@ -145,26 +145,6 @@ From the root of the azure-rest-api-specs repo, run the command:
 test-proxy push -a <path to assets.json>
 ```
 
-The command will produce output something like this:
-
-```text
-git --version
-git status --porcelain
-git config --get user.name
-git config --get user.email
-git branch 5b23bf70
-git checkout 5b23bf70
-git add -A .
-git -c user.name="Mike Kistler" -c user.email="mikekistler@microsoft.com" commit -m "Automatic asset update from test-proxy."
-git rev-parse --short=10 HEAD
-git remote -v
-git remote set-url origin https://github.com/Azure/azure-sdk-assets
-git tag apitest/appconfiguration/data-plane_2f1f7fc0aa
-git push origin apitest/appconfiguration/data-plane_2f1f7fc0aa
-git remote -v
-git remote set-url origin https://github.com/Azure/azure-sdk-assets
-```
-
 ## Add assets.json for recording to azure-rest-api-specs
 
 After pushing the recording, the test-proxy should write the latest git tag to assets.json file.
