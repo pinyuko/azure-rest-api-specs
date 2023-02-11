@@ -1,11 +1,15 @@
 # How to use RESTler and test-proxy to make traffic recording
 
-In this section, we'll show you how to make traffic recording with RESTler and the Azure SDK test-proxy.
+In this section, we'll show you how to generate a traffic recording with [RESTler][] and the
+[Azure SDK Tools Test Proxy][] and save it to the azure-sdk-assets git repository.
 For information on how to run RESTler, please go to [QuickStart](./QuickStart.md).
 
-The Azure SDK Test-proxy is a tool that provides out-of-process record/playback capabilities compatible with any language.
+The Azure SDK Tools Test Proxy is a tool that provides out-of-process record/playback capabilities compatible with any language.
 It also supports pushing/restoring the API test recordings from a git repository.
-Traffic recordings can provide evidence of running API test, and also help validate that the REST API definition is consistent with service behavior.
+Traffic recordings can provide evidence of running API tests and validate that the REST API definition is consistent with service behavior.
+
+[RESTler]: https://github.com/microsoft/restler-fuzzer
+[Azure SDK Tools Test Proxy]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md
 
 ## Install the test-proxy
 
@@ -96,7 +100,10 @@ body='{
 recording_id=$(curl -X POST -s -D - -d ${body} http://localhost:5000/Record/Start | grep 'x-recording-id' | awk '{print $2}' | sed 's/\r$//')
 ```
 
-Now you can update the custom dictionary with the recording id and the test-proxy headers.
+Now you can update the custom dictionary with the recording id and [the test-proxy headers](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#run-your-tests):
+- `x-recording-upstream-base-uri`: the base URI of the upstream service
+- `x-recording-id`: the recording id obtained from the test-proxy
+- `x-recording-mode`: the recording mode, which should be `record` for recording
 
 ```sh
 headers='{                                                 
@@ -137,8 +144,10 @@ find .assets -name recording.json
 ## Upload the Recording
 
 Check the recording file to ensure that all secrets have been removed.
+If any secrets are found, see the [Test Proxy documentation](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#session-and-test-level-transforms-sanitizers-and-matchers)
+for information on how to construct a custom sanitizer.
 
-After checking the recordings for secrets, push the recording to the azure-sdk-assets git repository.
+After ensuring that all secrets have been removed, push the recording to the azure-sdk-assets git repository.
 From the root of the azure-rest-api-specs repo, run the command:
 
 ```bash

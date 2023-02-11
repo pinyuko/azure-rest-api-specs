@@ -56,15 +56,10 @@ vars='{
 jq ".restler_custom_payload = $vars" restlerConfig/dict.json > dict.json
 ```
 
-Next update `config.json` to disable data fuzzing.
+No changes are needed to `config.json`, `annotations.json`, or `engine_settings.json`, so you can just copy them from the `restlerConfig` directory.
 
 ```sh
-jq '.DataFuzzing = false' restlerConfig/config.json > config.json
-```
-
-No changes are needed to `annotations.json` or `engine_settings.json`, so you can just copy them from the `restlerConfig` directory.
-
-```sh
+cp restlerConfig/config.json .
 cp restlerConfig/annotations.json .
 cp restlerConfig/engine_settings.json .
 ```
@@ -92,7 +87,6 @@ token=$(jq -r '.accessToken' token.json)
 
 echo "{'user1':{}, 'user2':{}}"
 echo "Authorization: bearer ${token}"
-echo "Authorization: shadow_unit_test_token"
 ```
 
 You might need to modify this script to specify a specific AAD scope on the get-access-token command.
@@ -115,10 +109,13 @@ Using python: 'python3' (Python 3.10.9)
 Request coverage (successful / total): 9 / 24
 Attempted requests: 10 / 24
 No bugs were found.
-See 'coverage_failures_to_investigate.txt.txt' to investigate API coverage.
+See 'coverage_failures_to_investigate.txt' to investigate API coverage.
 Task Test succeeded.
 Collecting logs...
 ```
+
+The time required to run the tests depends on the number and operations and complexity of the dependency graph,
+and for a very large service API it may be several hours.
 
 ## Analyze the results
 
@@ -126,7 +123,7 @@ If any tests failed or were not attempted, you will need to dig into the test re
 
 Some common reasons for failures are:
 - The request body may contain values that must be customized for your environment,
-for example a "tenantId" or a reference to another resource in your environment.
+for example a `tenantId` or a reference to another resource in your environment.
 
 If there are operations that were not attempted, that happens when RESTler has determined that these operations
 depend on some other operation, perhaps indirectly, that failed.
