@@ -20,8 +20,7 @@ External Contributors can read [Getting Started with OpenAPI Specifications](htt
 - **Resource Provider** - When a service onboards new functionality onto ARM, it is required to complete [Resource Provider Registration](https://armwiki.azurewebsites.net/rp_onboarding/ResourceProviderRegistration.html).  For existing **Resource Provider to Service Mapping**, refer to [Match resource provider to service](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers#match-resource-provider-to-service)*
 
 
-## Directory Structure
-
+## Directory S
 
 The structure of the directory should strictly follow these rules:
 
